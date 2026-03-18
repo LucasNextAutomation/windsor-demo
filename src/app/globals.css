@@ -3,12 +3,13 @@
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
-  --primary: 221 100% 36%;
+  --primary: 215 55% 23%;
   --primary-foreground: 210 40% 98%;
+  --accent: 38 92% 50%;
   --muted: 210 40% 96.1%;
   --muted-foreground: 215.4 16.3% 46.9%;
   --border: 214.3 31.8% 91.4%;
-  --ring: 221 100% 36%;
+  --ring: 215 55% 23%;
 }
 
 body {
@@ -22,8 +23,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 73, 184, 0.2); }
-  50% { box-shadow: 0 0 20px 4px rgba(0, 73, 184, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(26, 54, 93, 0.2); }
+  50% { box-shadow: 0 0 20px 4px rgba(26, 54, 93, 0.15); }
 }
 
 .animate-float {

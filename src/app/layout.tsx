@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Windsor Companies — AI-Powered Acquisition System Demo",
-  description: "Off-Market Multifamily Deal Sourcing, AI Underwriting & Automated Outreach — Built for Windsor Companies by NextAutomation",
+  title: "Windsor Companies -- AI-Powered Development Platform",
+  description: "Deal Flow Intelligence, Project Command Center & Portfolio Management -- Built for Windsor Companies by NextAutomation",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
