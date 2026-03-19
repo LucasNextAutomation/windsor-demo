@@ -5,6 +5,8 @@ export interface Deal {
   city: string
   state: string
   county: string
+  lat: number
+  lng: number
   type: "Multifamily" | "Mixed-Use" | "Adaptive Reuse" | "Historic" | "Development Site"
   units: number
   sqft: number
@@ -35,6 +37,8 @@ export const mockDeals: Deal[] = [
     city: "Dayton",
     state: "OH",
     county: "Montgomery",
+    lat: 39.7631,
+    lng: -84.1818,
     type: "Adaptive Reuse",
     units: 48,
     sqft: 62000,
@@ -67,6 +71,8 @@ export const mockDeals: Deal[] = [
     city: "Oakwood",
     state: "OH",
     county: "Montgomery",
+    lat: 39.7250,
+    lng: -84.1745,
     type: "Multifamily",
     units: 36,
     sqft: 42000,
@@ -99,6 +105,8 @@ export const mockDeals: Deal[] = [
     city: "Dayton",
     state: "OH",
     county: "Montgomery",
+    lat: 39.7580,
+    lng: -84.1916,
     type: "Adaptive Reuse",
     units: 24,
     sqft: 35000,
@@ -131,6 +139,8 @@ export const mockDeals: Deal[] = [
     city: "Columbus",
     state: "OH",
     county: "Franklin",
+    lat: 39.9750,
+    lng: -83.0100,
     type: "Mixed-Use",
     units: 64,
     sqft: 85000,
@@ -163,6 +173,8 @@ export const mockDeals: Deal[] = [
     city: "Yellow Springs",
     state: "OH",
     county: "Greene",
+    lat: 39.8032,
+    lng: -83.8870,
     type: "Historic",
     units: 18,
     sqft: 22000,
@@ -195,6 +207,8 @@ export const mockDeals: Deal[] = [
     city: "Columbus",
     state: "OH",
     county: "Franklin",
+    lat: 39.9680,
+    lng: -82.9950,
     type: "Development Site",
     units: 72,
     sqft: 95000,
@@ -228,6 +242,8 @@ export const mockDeals: Deal[] = [
     city: "Springfield",
     state: "OH",
     county: "Clark",
+    lat: 39.9242,
+    lng: -83.8088,
     type: "Adaptive Reuse",
     units: 30,
     sqft: 40000,

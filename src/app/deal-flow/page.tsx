@@ -7,9 +7,15 @@ import {
   Database, ArrowUpDown, SlidersHorizontal, Radar, Star,
   Landmark, CheckCircle2, X, Award, Target
 } from "lucide-react"
+import dynamic from "next/dynamic"
 import { mockDeals, dashboardStats, type Deal } from "@/data/deals"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+
+const DealMap = dynamic(() => import("@/components/DealMap"), {
+  ssr: false,
+  loading: () => <div className="rounded-xl border border-gray-200 bg-gray-50 h-[380px] flex items-center justify-center text-sm text-gray-400">Loading map...</div>
+})
 
 function fmt(n: number) {
   if (n >= 1000000) return `$${(n / 1000000).toFixed(1)}M`
@@ -256,6 +262,15 @@ export default function DealFlowPage() {
               <p className="text-[10px] text-gray-400 mt-0.5">{s.sub}</p>
             </div>
           ))}
+        </div>
+
+        {/* Map View */}
+        <div className="mb-6">
+          <DealMap
+            deals={mockDeals}
+            selectedDealId={selectedDeal?.id}
+            onDealSelect={(deal) => setSelectedDeal(deal)}
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

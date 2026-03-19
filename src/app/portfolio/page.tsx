@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Building2, DollarSign, Users, TrendingUp, Wrench,
@@ -8,8 +9,14 @@ import {
   Calendar, CheckCircle2, AlertTriangle, ArrowUpRight
 } from "lucide-react"
 import { properties, portfolioStats, type Property } from "@/data/portfolio"
+import { anomalyAlerts } from "@/data/analytics"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+
+const OccupancyChart = dynamic(() => import("@/components/charts/OccupancyChart"), { ssr: false })
+const RentCompChart = dynamic(() => import("@/components/charts/RentCompChart"), { ssr: false })
+const LeaseExpirationChart = dynamic(() => import("@/components/charts/LeaseExpirationChart"), { ssr: false })
+const NOIWaterfall = dynamic(() => import("@/components/charts/NOIWaterfall"), { ssr: false })
 
 function fmt(n: number) {
   if (n >= 1000000) return `$${(n / 1000000).toFixed(1)}M`
@@ -26,7 +33,7 @@ function OccupancyBadge({ pct }: { pct: number }) {
 
 export default function PortfolioPage() {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
-  const [view, setView] = useState<"grid" | "table">("grid")
+  const [view, setView] = useState<"grid" | "table" | "dashboard">("grid")
 
   return (
     <div className="min-h-screen bg-white">
@@ -41,6 +48,7 @@ export default function PortfolioPage() {
           <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
             <button onClick={() => setView("grid")} className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${view === "grid" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"}`}>Grid</button>
             <button onClick={() => setView("table")} className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${view === "table" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"}`}>Table</button>
+            <button onClick={() => setView("dashboard")} className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-1.5 ${view === "dashboard" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"}`}><BarChart3 className="w-3.5 h-3.5" />Dashboard</button>
           </div>
         </div>
 
@@ -177,6 +185,51 @@ export default function PortfolioPage() {
                 </tr>
               </tfoot>
             </table>
+          </div>
+        )}
+
+        {/* Dashboard View */}
+        {view === "dashboard" && (
+          <div className="space-y-6">
+            {/* 2x2 Chart Grid */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <OccupancyChart />
+              <NOIWaterfall />
+              <RentCompChart />
+              <LeaseExpirationChart />
+            </div>
+
+            {/* Anomaly Alerts */}
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                <h3 className="text-sm font-semibold text-gray-900">AI Anomaly Alerts</h3>
+                <span className="text-[10px] font-medium text-white bg-red-500 rounded-full px-1.5 py-0.5">{anomalyAlerts.filter(a => a.severity === "critical").length}</span>
+              </div>
+              <div className="space-y-2">
+                {anomalyAlerts.map(alert => (
+                  <div key={alert.id} className={`rounded-lg p-3 flex items-start gap-3 ${
+                    alert.severity === "critical" ? "bg-red-50 border border-red-100" :
+                    alert.severity === "warning" ? "bg-amber-50 border border-amber-100" :
+                    "bg-blue-50 border border-blue-100"
+                  }`}>
+                    <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded mt-0.5 shrink-0 ${
+                      alert.severity === "critical" ? "bg-red-100 text-red-700" :
+                      alert.severity === "warning" ? "bg-amber-100 text-amber-700" :
+                      "bg-blue-100 text-blue-700"
+                    }`}>{alert.severity}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-gray-900">{alert.title}</span>
+                        <span className="text-[10px] text-gray-400">{alert.property}</span>
+                      </div>
+                      <p className="text-[11px] text-gray-600 mt-0.5">{alert.description}</p>
+                      <p className="text-[10px] text-gray-400 mt-1">Impact: {alert.impact}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 

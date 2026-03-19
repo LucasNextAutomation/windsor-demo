@@ -3,11 +3,13 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { TrendingUp, Hammer, Building2, Menu, X } from "lucide-react"
+import Image from "next/image"
+import { TrendingUp, Calculator, Hammer, Building2, Menu, X } from "lucide-react"
 
 const navItems = [
   { href: "/", label: "Overview" },
   { href: "/deal-flow", label: "Deal Flow", icon: TrendingUp },
+  { href: "/underwriting", label: "Underwriting", icon: Calculator },
   { href: "/project-command", label: "Projects", icon: Hammer },
   { href: "/portfolio", label: "Portfolio", icon: Building2 },
 ]
@@ -21,12 +23,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#1a365d] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">W</span>
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-sm font-semibold text-gray-900 tracking-tight">Windsor Companies</span>
-            </div>
+            <Image src="/windsor-logo.svg" alt="Windsor Companies" width={140} height={36} className="h-8 w-auto" />
           </Link>
 
           {/* Desktop nav */}
