@@ -9,7 +9,6 @@ import {
 } from "lucide-react"
 import dynamic from "next/dynamic"
 import { mockDeals, dashboardStats, type Deal } from "@/data/deals"
-import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 
 const DealMap = dynamic(() => import("@/components/DealMap"), {
@@ -152,8 +151,6 @@ export default function DealFlowPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Top Bar */}
         <div className="flex items-center justify-between mb-8">

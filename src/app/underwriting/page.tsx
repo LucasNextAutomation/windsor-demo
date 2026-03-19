@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Calculator, AlertTriangle, TrendingUp, FileText, ChevronDown, CheckCircle2, Building2, DollarSign, Shield, BarChart3 } from "lucide-react"
-import Navbar from "@/components/Navbar"
 import { sampleDeal } from "@/data/underwriting"
 
 export default function UnderwritingPage() {
@@ -17,7 +16,6 @@ export default function UnderwritingPage() {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <Navbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
         {/* Header */}

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Windsor Companies -- AI-Powered Development Platform",
-  description: "Deal Flow Intelligence, Project Command Center & Portfolio Management -- Built for Windsor Companies by NextAutomation",
+  title: "Windsor Companies — AI-Powered Development Platform",
+  description: "Deal Flow Intelligence, Underwriting, Project Command & Portfolio Management — Built for Windsor Companies by NextAutomation",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,8 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin=""
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
-        {children}
+      <body className={`${inter.className} antialiased bg-gray-50/50`}>
+        <Sidebar />
+        <main className="ml-[264px] min-h-screen">
+          {children}
+        </main>
       </body>
     </html>
   );

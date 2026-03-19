@@ -1,206 +1,167 @@
 "use client"
 
-import Link from "next/link"
 import { motion } from "framer-motion"
-import { TrendingUp, Hammer, Building2, ArrowRight, CheckCircle2 } from "lucide-react"
+import { Building2, TrendingUp, Search, MapPin, ArrowUpRight, ArrowDownRight } from "lucide-react"
+import dynamic from "next/dynamic"
+import { mockDeals, dashboardStats } from "@/data/deals"
+import { portfolioStats } from "@/data/portfolio"
+import { anomalyAlerts } from "@/data/analytics"
+import Link from "next/link"
 
-const systems = [
-  {
-    href: "/deal-flow",
-    title: "Deal Flow Intelligence",
-    icon: TrendingUp,
-    description: "Automated sourcing across CoStar, LoopNet, public records, and broker networks. AI scores every opportunity against Windsor's investment criteria.",
-    highlights: ["15+ data sources across Ohio", "AI investment scoring", "Historic tax credit detection", "Pipeline CRM tracking"],
-  },
-  {
-    href: "/project-command",
-    title: "Project Command Center",
-    icon: Hammer,
-    description: "Real-time budget tracking, automated invoice processing, G702/G703 pay applications, and permit monitoring across all active projects.",
-    highlights: ["Live budget tracking", "AI invoice matching", "Draw package automation", "Permit & compliance alerts"],
-  },
-  {
-    href: "/portfolio",
-    title: "Portfolio & Investor Intelligence",
-    icon: Building2,
-    description: "Unified dashboard for 1,000+ units with occupancy tracking, automated investor reports, maintenance routing, and asset performance analytics.",
-    highlights: ["1,000+ unit dashboard", "Automated investor reports", "Tenant management AI", "Hold/sell analysis"],
-  },
-]
+const OccupancyChart = dynamic(() => import("@/components/charts/OccupancyChart"), { ssr: false })
+const LeaseExpirationChart = dynamic(() => import("@/components/charts/LeaseExpirationChart"), { ssr: false })
 
 const stats = [
-  { value: "5+", label: "Active Projects" },
-  { value: "$100M+", label: "Pipeline" },
-  { value: "1,000+", label: "Units Managed" },
-  { value: "15+", label: "Data Sources" },
+  { label: "Total Leads", value: dashboardStats.totalDealsFound.toString(), trend: "+8 this week", up: true, color: "#1a365d", icon: Search },
+  { label: "Hot Leads (85+)", value: dashboardStats.highScore.toString(), trend: "+3 vs last week", up: true, color: "#dc2626", icon: TrendingUp },
+  { label: "Units Managed", value: "700", trend: "95.4% occupancy", up: true, color: "#10b981", icon: Building2 },
+  { label: "Markets Active", value: dashboardStats.marketsMonitored.toString(), trend: "6 counties monitored", up: true, color: "#d97706", icon: MapPin },
 ]
 
-export default function LandingPage() {
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="relative py-24 md:py-36 overflow-hidden">
-        {/* Subtle background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-50/80 via-white to-white" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#1a365d]/[0.03] rounded-full blur-3xl" />
+export default function DashboardPage() {
+  const recentDeals = mockDeals.filter(d => !d.hidden).slice(0, 5)
+  const criticalAlerts = anomalyAlerts.filter(a => a.severity === "critical" || a.severity === "warning")
 
-        <div className="max-w-4xl mx-auto px-6 relative">
-          <div className="text-center">
-            {/* Logo */}
+  return (
+    <div className="max-w-7xl mx-auto px-6 py-8">
+      {/* Header */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
+        <p className="text-sm text-gray-400 mt-1">Last updated: 2 minutes ago</p>
+      </motion.div>
+
+      {/* Stats Cards */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {stats.map((stat, i) => {
+          const Icon = stat.icon
+          return (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex justify-center mb-10"
+              key={stat.label}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="relative bg-white rounded-2xl border border-gray-200 p-6 hover:border-gray-300 hover:shadow-lg transition-all group"
             >
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-[#1a365d] flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-3xl md:text-4xl tracking-tight">W</span>
+              <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl" style={{ background: `linear-gradient(to right, ${stat.color}, transparent)` }} />
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{stat.label}</p>
+                  <p className="text-3xl font-bold text-gray-900 mt-1">{stat.value}</p>
+                </div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${stat.color}10` }}>
+                  <Icon className="w-5 h-5" style={{ color: stat.color }} />
+                </div>
+              </div>
+              <div className="flex items-center gap-1 mt-3">
+                {stat.up ? <ArrowUpRight className="w-3 h-3 text-emerald-500" /> : <ArrowDownRight className="w-3 h-3 text-red-500" />}
+                <span className="text-xs text-gray-500">{stat.trend}</span>
               </div>
             </motion.div>
+          )
+        })}
+      </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-400 font-medium mb-6"
-            >
-              Windsor Companies
-            </motion.p>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="text-3xl md:text-5xl lg:text-6xl font-semibold text-gray-900 mb-6 tracking-tight leading-[1.1]"
-            >
-              Your AI-Powered<br />
-              Development Platform
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-              className="text-base md:text-lg text-gray-500 mb-10 max-w-xl mx-auto leading-relaxed"
-            >
-              From deal sourcing to asset management -- one integrated system.
-              Three AI-powered platforms built for vertically-integrated construction and development.
-            </motion.p>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className="flex items-center justify-center gap-6 md:gap-10"
-            >
-              {stats.map(stat => (
-                <div key={stat.label} className="text-center">
-                  <p className="text-xl md:text-2xl font-bold text-[#1a365d]">{stat.value}</p>
-                  <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider mt-0.5">{stat.label}</p>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+      <div className="grid lg:grid-cols-3 gap-6 mb-8">
+        {/* Charts -- Left 2 cols */}
+        <div className="lg:col-span-2 space-y-4">
+          <OccupancyChart />
+          <LeaseExpirationChart />
         </div>
-      </section>
 
-      {/* Divider */}
-      <div className="max-w-24 mx-auto border-t border-gray-200" />
-
-      {/* System Cards */}
-      <section className="py-20 md:py-28">
-        <div className="max-w-5xl mx-auto px-6">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-center text-xs uppercase tracking-[0.2em] text-gray-400 font-medium mb-14"
-          >
-            Explore the live demos
-          </motion.p>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {systems.map((sys, i) => (
-              <motion.div
-                key={sys.href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45 + 0.08 * i }}
-              >
-                <Link href={sys.href} className="block group h-full">
-                  <div className="relative h-full bg-white border border-gray-200 rounded-2xl p-6 transition-all duration-300 hover:border-[#1a365d]/40 hover:shadow-lg hover:-translate-y-0.5">
-                    <div className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-5 group-hover:bg-[#1a365d]/5 group-hover:border-[#1a365d]/20 transition-colors">
-                      <sys.icon className="w-5 h-5 text-gray-400 group-hover:text-[#1a365d] transition-colors" />
-                    </div>
-
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">{sys.title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed mb-5">{sys.description}</p>
-
-                    <div className="space-y-2 mb-6">
-                      {sys.highlights.map((h, j) => (
-                        <div key={j} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#d69e2e]/80 flex-shrink-0" />
-                          <span className="text-gray-600">{h}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center gap-1.5 text-sm font-medium text-[#1a365d] group-hover:gap-2.5 transition-all mt-auto">
-                      View Demo <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
+        {/* Alerts -- Right col */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-4">
+          <div className="bg-white rounded-2xl border border-gray-200 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-gray-900">Active Alerts</h3>
+              <span className="text-[10px] font-bold text-white bg-red-500 rounded-full px-1.5 py-0.5">{criticalAlerts.length}</span>
+            </div>
+            <div className="space-y-2">
+              {criticalAlerts.map(alert => (
+                <div key={alert.id} className={`rounded-lg p-3 ${
+                  alert.severity === "critical" ? "bg-red-50 border border-red-100" : "bg-amber-50 border border-amber-100"
+                }`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                      alert.severity === "critical" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"
+                    }`}>{alert.severity}</span>
+                    <span className="text-[10px] text-gray-400">{alert.property}</span>
                   </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Windsor-specific context */}
-      <section className="py-16 bg-gray-50/50">
-        <div className="max-w-5xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-[#1a365d] rounded-2xl p-8 md:p-12 text-white"
-          >
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-200 font-medium mb-4">Built for Windsor</p>
-            <h2 className="text-2xl md:text-3xl font-semibold mb-4 tracking-tight">
-              Vertically integrated. AI-enhanced.
-            </h2>
-            <p className="text-blue-100 leading-relaxed mb-6 max-w-2xl">
-              Windsor Companies spans construction, development, and property management across Ohio.
-              From adaptive reuse projects like Grant-Deneau Tower and Fire Blocks District to ground-up
-              development at Antioch Village -- your operations deserve a unified AI platform that connects
-              every stage of the lifecycle.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { label: "Team Members", value: "29" },
-                { label: "Active Markets", value: "5 Ohio" },
-                { label: "AUM", value: "$100M+" },
-                { label: "Residential Units", value: "1,000+" },
-              ].map(item => (
-                <div key={item.label} className="bg-white/10 rounded-xl p-3 text-center">
-                  <p className="text-lg md:text-xl font-bold text-[#d69e2e]">{item.value}</p>
-                  <p className="text-[10px] text-blue-200 uppercase tracking-wider mt-0.5">{item.label}</p>
+                  <p className="text-xs font-medium text-gray-900">{alert.title}</p>
+                  <p className="text-[10px] text-gray-500 mt-0.5">{alert.impact}</p>
                 </div>
               ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
+          </div>
 
-      {/* Footer */}
-      <footer className="py-8 border-t border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-400">Interactive demo -- data is simulated for demonstration purposes</p>
-          <p className="text-xs text-gray-400">
-            Built by <span className="text-[#1a365d] font-medium">NextAutomation</span>
-          </p>
+          {/* Portfolio Quick Stats */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-5">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">Portfolio Overview</h3>
+            <div className="space-y-3">
+              {[
+                { label: "Annual NOI", value: `$${(portfolioStats.annualNOI / 1000000).toFixed(1)}M` },
+                { label: "Avg Cap Rate", value: `${portfolioStats.avgCapRate}%` },
+                { label: "Portfolio Value", value: `$${(portfolioStats.portfolioValue / 1000000).toFixed(0)}M` },
+                { label: "Open Maintenance", value: portfolioStats.openMaintenance.toString() },
+                { label: "Leases Expiring (90d)", value: portfolioStats.leasesExpiring90.toString() },
+              ].map(item => (
+                <div key={item.label} className="flex items-center justify-between py-1">
+                  <span className="text-xs text-gray-500">{item.label}</span>
+                  <span className="text-sm font-semibold text-gray-900 font-mono">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Recent Deals Table */}
+      <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-white rounded-2xl border border-gray-200">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h3 className="text-sm font-semibold text-gray-900">Recent Deal Activity</h3>
+          <Link href="/deal-flow" className="text-xs font-medium text-[#1a365d] hover:underline">View all deals</Link>
         </div>
-      </footer>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px]">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="text-left px-6 py-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Score</th>
+                <th className="text-left px-4 py-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Property</th>
+                <th className="text-left px-4 py-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Type</th>
+                <th className="text-right px-4 py-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Est. Value</th>
+                <th className="text-left px-4 py-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">County</th>
+                <th className="text-left px-6 py-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentDeals.map(deal => (
+                <tr key={deal.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer">
+                  <td className="px-6 py-3">
+                    <span className={`inline-flex items-center justify-center w-10 h-6 rounded-md text-xs font-bold text-white ${
+                      deal.aiScore >= 8.5 ? "bg-red-500" : deal.aiScore >= 7.0 ? "bg-amber-500" : "bg-blue-500"
+                    }`}>{deal.aiScore}</span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <p className="text-sm font-medium text-gray-900">{deal.name}</p>
+                    <p className="text-[11px] text-gray-400">{deal.address}, {deal.city}</p>
+                  </td>
+                  <td className="px-4 py-3 text-xs text-gray-500">{deal.type}</td>
+                  <td className="px-4 py-3 text-right text-sm font-medium text-gray-900 font-mono tabular-nums">${(deal.estimatedValue / 1000000).toFixed(1)}M</td>
+                  <td className="px-4 py-3 text-xs text-gray-500">{deal.county}</td>
+                  <td className="px-6 py-3">
+                    <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                      deal.status === "new" ? "bg-blue-50 text-blue-700" :
+                      deal.status === "reviewing" ? "bg-gray-100 text-gray-600" :
+                      deal.status === "loi" ? "bg-emerald-50 text-emerald-700" :
+                      deal.status === "due_diligence" ? "bg-purple-50 text-purple-700" :
+                      "bg-gray-100 text-gray-500"
+                    }`}>{deal.status === "due_diligence" ? "Due Diligence" : deal.status === "loi" ? "Under LOI" : deal.status.charAt(0).toUpperCase() + deal.status.slice(1)}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
     </div>
   )
 }

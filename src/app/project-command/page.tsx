@@ -8,7 +8,6 @@ import {
   Receipt, ClipboardList
 } from "lucide-react"
 import { projects, recentInvoices, projectStats, type Project, type Invoice } from "@/data/projects"
-import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 
 function fmt(n: number) {
@@ -48,8 +47,6 @@ export default function ProjectCommandPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
