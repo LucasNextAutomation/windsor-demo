@@ -34,3 +34,204 @@ body {
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
 }
+
+/* ─── Analyzer Pipeline Animation ─── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+/* ─── Glass Card ─── */
+.glass-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* ─── Memo Paper (IC Memo Output) ─── */
+.memo-paper {
+  font-family: 'Libre Franklin', 'Calibri', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  background: #f9fafb;
+  padding: 48px 56px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  max-width: 850px;
+  margin: 0 auto;
+  min-height: 800px;
+}
+
+.memo-paper h1 {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #333;
+}
+
+.memo-paper h2 {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 28px 0 16px 0;
+  padding-top: 8px;
+  border-top: 1.5px solid #ddd;
+}
+
+.memo-paper h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #002060;
+  margin: 16px 0 8px 0;
+}
+
+.memo-paper p {
+  margin-bottom: 12px;
+}
+
+.memo-paper strong {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.memo-paper ul {
+  margin: 8px 0 16px 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.memo-paper ul li {
+  position: relative;
+  margin-bottom: 6px;
+  padding-left: 14px;
+}
+
+.memo-paper ul li::before {
+  content: "\2022";
+  position: absolute;
+  left: -6px;
+  color: #1a1a1a;
+  font-size: 1.2em;
+  line-height: 1;
+  top: 1px;
+}
+
+.memo-paper ol li {
+  margin-bottom: 6px;
+}
+
+.memo-paper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+}
+
+.memo-paper th {
+  background: #002060;
+  color: #fff;
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: right;
+  border: 1px solid #fff;
+}
+
+.memo-paper th:first-child {
+  text-align: left;
+}
+
+.memo-paper td {
+  padding: 6px 12px;
+  border-bottom: 1px solid #eee;
+  color: #1a1a1a;
+  text-align: right;
+}
+
+.memo-paper td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.memo-paper blockquote {
+  border-left: 3px solid #002060;
+  margin: 16px 0;
+  padding: 4px 0 4px 16px;
+  font-style: italic;
+  color: #444;
+  background: #f9f9fc;
+}
+
+/* ─── Citation Pills ─── */
+.cite-im {
+  color: #7c6fc4;
+  font-size: 10px;
+  font-weight: 500;
+  vertical-align: super;
+  cursor: default;
+  opacity: 0.75;
+}
+
+.cite-web {
+  color: #1a365d;
+  font-size: 10px;
+  font-weight: 500;
+  vertical-align: super;
+  cursor: default;
+  opacity: 0.75;
+}
+
+.cite-model {
+  color: #db2777;
+  font-size: 10px;
+  font-weight: 500;
+  vertical-align: super;
+  cursor: default;
+  opacity: 0.75;
+}
+
+.cite-gap {
+  display: inline;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  background: #fef3c7;
+  color: #92400e;
+  white-space: nowrap;
+  vertical-align: super;
+}
+
+/* ─── Customizable Section Badge ─── */
+.customize-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 10px;
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #1a365d;
+  background: rgba(26, 54, 93, 0.08);
+  border: 1px solid rgba(26, 54, 93, 0.2);
+  border-radius: 4px;
+  vertical-align: middle;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  cursor: default;
+}
+.customize-badge:hover {
+  opacity: 1;
+}
